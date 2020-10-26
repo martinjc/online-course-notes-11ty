@@ -47,6 +47,7 @@ module.exports = function(eleventyConfig) {
     // register our custom shortcodes
     eleventyConfig.addShortcode("questions", shortcodes.insertQuestions);
     eleventyConfig.addShortcode("panopto", shortcodes.insertPanopto);
+    eleventyConfig.addShortcode("reponame", shortcodes.getRepoName);
 
     return {
       pathPrefix: isProduction ? PRODUCTION_DIR : '/',

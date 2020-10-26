@@ -30,7 +30,6 @@ module.exports = {
 
     // return the repository name and domain for use in utterace.es comments
     getRepoName: (url) => {
-        console.log(url, url.replace('git+https://github.com/', ''))
         return url.replace('git+https://github.com/', '').replace('.git', '');
     }
 

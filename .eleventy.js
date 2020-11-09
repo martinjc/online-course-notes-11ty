@@ -18,6 +18,8 @@ module.exports = function(eleventyConfig) {
 
     // copy our root files
     eleventyConfig.addPassthroughCopy({"src/_root/*.*": "./"});
+    eleventyConfig.addPassthroughCopy("src/img");
+    eleventyConfig.addPassthroughCopy("src/examples");
     
     // who doesn't want this to be true at this point?
     eleventyConfig.setDataDeepMerge(true);
@@ -48,6 +50,7 @@ module.exports = function(eleventyConfig) {
     eleventyConfig.addShortcode("questions", shortcodes.insertQuestions);
     eleventyConfig.addShortcode("panopto", shortcodes.insertPanopto);
     eleventyConfig.addShortcode("reponame", shortcodes.getRepoName);
+    eleventyConfig.addPairedShortcode("panel", shortcodes.insertPanel);
 
     return {
       pathPrefix: isProduction ? PRODUCTION_DIR : '/',

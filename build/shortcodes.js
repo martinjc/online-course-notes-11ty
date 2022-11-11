@@ -1,4 +1,5 @@
 const markdownIt = require("markdown-it");
+const Image = require('@11ty/eleventy-img');
 
 module.exports = {
     // Embedding questions from data files into the notes page template
@@ -45,6 +46,24 @@ module.exports = {
 <div class="panel-body">${content}</div>
 </div>`
         return template;
+    },
+
+    imageShortcode: async function(src, alt="", sizes="(min-width: 30em) 30vw, 100vw") {
+        let metadata = await Image(src, {
+            widths: [640, 768, 1024, 1366, 1600, 1920],
+            formats: ["avif", "jpeg"],
+            outputDir: "./public/img/"
+        });
+
+        let imageAttributes = {
+            alt,
+            sizes,
+            loading: "lazy",
+            decoding: "async",
+        };
+
+        return Image.generateHTML(metadata, imageAttributes);
     }
 
 }
+

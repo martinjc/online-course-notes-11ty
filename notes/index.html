@@ -37,19 +37,22 @@
   <body>
     <header>
 </header>
-    <header>
-    <h1> <a href="">
+    
+<header>
+    <h1>
+        <a href="">
             first notes page
-        </a></h1>
+        </a>
+    </h1>
 </header>
-
 <div class="container">
     <nav class="sidebar">
         <a href='/online-course-notes-11ty/'>Home</a>
-        <ul><li><a href="/online-course-notes-11ty/notes/">first notes page</a></li></ul>
+        <ul><li>
+                    <a href="/online-course-notes-11ty/notes/">first notes page</a>
+                </li></ul>
         <a href="/online-course-notes-11ty/about/">About</a>
     </nav>
-
     <div class="content">
         <p>Well, here’s a note</p>
 <p><picture><source type="image/avif" srcset="/img/0Qhk3haOiX-640.avif 640w, /img/0Qhk3haOiX-768.avif 768w, /img/0Qhk3haOiX-1024.avif 1024w, /img/0Qhk3haOiX-1366.avif 1366w, /img/0Qhk3haOiX-1600.avif 1600w, /img/0Qhk3haOiX-1920.avif 1920w" sizes="(min-width: 30em) 30vw, 100vw"><source type="image/jpeg" srcset="/img/0Qhk3haOiX-640.jpeg 640w, /img/0Qhk3haOiX-768.jpeg 768w, /img/0Qhk3haOiX-1024.jpeg 1024w, /img/0Qhk3haOiX-1366.jpeg 1366w, /img/0Qhk3haOiX-1600.jpeg 1600w, /img/0Qhk3haOiX-1920.jpeg 1920w" sizes="(min-width: 30em) 30vw, 100vw"><img alt="a good boy" loading="lazy" decoding="async" src="/img/0Qhk3haOiX-640.jpeg" width="1920" height="2550"></picture></p>
@@ -57,25 +60,30 @@
         <div class="nextprev">
         </div>
         <div class="comments">
-            <script src="https://utteranc.es/client.js"
-            repo="martinjc/online-course-notes-11ty"
-            issue-term="title"
-            theme="github-light"
-            crossorigin="anonymous"
-            async>
-            </script>
+            <script src="https://utteranc.es/client.js" repo="martinjc/online-course-notes-11ty" issue-term="title" theme="github-light" crossorigin="anonymous" async></script>
         </div>
-        
     </div>
 </div>
-
 <script>
-document.querySelectorAll('.answer-block').forEach(d => {
-    d.addEventListener('click', (e) => {
-        d.querySelector('.feedback').classList.toggle('hidden');
-        d.classList.toggle('selected');
+    document.querySelectorAll('.answer-block').forEach(d => {
+        d.addEventListener('click', (e) => {
+            d
+                .querySelector('.feedback')
+                .classList
+                .toggle('hidden');
+            d.classList.toggle('selected');
+        });
     });
-});
+    const urlParams = new URLSearchParams(window.location.search);
+    const embed = urlParams.get('embed');
+    if (embed) {
+        document.querySelectorAll('.comments').forEach(d => {
+            d.classList.toggle('hidden');
+        });
+        document.querySelectorAll('.sidebar').forEach(d => {
+            d.classList.toggle('hidden');
+        });
+    }
 </script>
     
   </body>

@@ -37,44 +37,52 @@
   <body>
     <header>
 </header>
-    <header>
-    <h1> <a href="">
+    
+<header>
+    <h1>
+        <a href="">
             About
-        </a></h1>
+        </a>
+    </h1>
 </header>
-
 <div class="container">
     <nav class="sidebar">
         <a href='/online-course-notes-11ty/'>Home</a>
-        <ul><li><a href="/online-course-notes-11ty/notes/">first notes page</a></li></ul>
+        <ul><li>
+                    <a href="/online-course-notes-11ty/notes/">first notes page</a>
+                </li></ul>
         <a href="/online-course-notes-11ty/about/">About</a>
     </nav>
-
     <div class="content">
         <p>Hey all.</p>
 
         <div class="nextprev">
         </div>
         <div class="comments">
-            <script src="https://utteranc.es/client.js"
-            repo="martinjc/online-course-notes-11ty"
-            issue-term="title"
-            theme="github-light"
-            crossorigin="anonymous"
-            async>
-            </script>
+            <script src="https://utteranc.es/client.js" repo="martinjc/online-course-notes-11ty" issue-term="title" theme="github-light" crossorigin="anonymous" async></script>
         </div>
-        
     </div>
 </div>
-
 <script>
-document.querySelectorAll('.answer-block').forEach(d => {
-    d.addEventListener('click', (e) => {
-        d.querySelector('.feedback').classList.toggle('hidden');
-        d.classList.toggle('selected');
+    document.querySelectorAll('.answer-block').forEach(d => {
+        d.addEventListener('click', (e) => {
+            d
+                .querySelector('.feedback')
+                .classList
+                .toggle('hidden');
+            d.classList.toggle('selected');
+        });
     });
-});
+    const urlParams = new URLSearchParams(window.location.search);
+    const embed = urlParams.get('embed');
+    if (embed) {
+        document.querySelectorAll('.comments').forEach(d => {
+            d.classList.toggle('hidden');
+        });
+        document.querySelectorAll('.sidebar').forEach(d => {
+            d.classList.toggle('hidden');
+        });
+    }
 </script>
     
   </body>

@@ -9,6 +9,8 @@ module.exports = function (eleventyConfig) {
     const markdownItFootnote = require("markdown-it-footnote");
     const markdownItEmoji = require("markdown-it-emoji");
     const markdownIt = require("markdown-it");
+    const eleventyNavigationPlugin = require("@11ty/eleventy-navigation");
+
 
     // custom shortcodes go in this file
     const shortcodes = require("./build/shortcodes.js");
@@ -26,7 +28,7 @@ module.exports = function (eleventyConfig) {
 
     // syntax highlighting
     eleventyConfig.addPlugin(syntaxHighlight);
-
+    eleventyConfig.addPlugin(eleventyNavigationPlugin);
 
     // add footnotes and emoji to the markdown parser
     let markdownLib = markdownIt({

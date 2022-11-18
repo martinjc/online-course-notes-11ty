@@ -5,21 +5,22 @@ layout: base.njk
 <header>
     <h1>
         <a href="{{ link }}">
-            {{ title }}
+            {{ title or eleventyNavigation.title }}
         </a>
     </h1>
 </header>
 <div class="container">
     <nav class="sidebar">
-        <a href='{{ "/" | url }}'>Home</a>
-        <ul>
-            {%- for note in collections.notes | sortByPageOrder -%}
-                <li>
-                    <a href="{{ note.url | url }}">{{ note.data.title }}</a>
-                </li>
-            {%- endfor -%}
-        </ul>
-        <a href="{{ '/about/' | url }}">About</a>
+        {{ collections.all | eleventyNavigation | eleventyNavigationToHtml | safe }}
+        {# <a href='{{ "/" | url }}'>Home</a>
+                        <ul>
+                            {%- for note in collections.notes | sortByPageOrder -%}
+                                <li>
+                                    <a href="{{ note.url | url }}">{{ note.data.title }}</a>
+                                </li>
+                            {%- endfor -%}
+                        </ul>
+                        <a href="{{ '/about/' | url }}">About</a> #}
     </nav>
     <div class="content">
         {{ content | safe }}

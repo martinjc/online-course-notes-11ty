@@ -1,11 +1,13 @@
 ---
 layout: page
 order: 1
-title: first notes page
-eleventyNavigation:
-  key: note1
-  parent: Home
-  title: first notes page
+title: First Notes Page
+parent: Course Notes
+eleventyComputed:
+  eleventyNavigation:
+    key: "{{ title }}"
+    parent: "{{ parent }}"
+    order: "{{ order }}"
 ---
 
 Well, here's a note

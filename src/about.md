@@ -1,9 +1,12 @@
 ---
 layout: page
 title: About
-eleventyNavigation:
-  key: About
-  order: 1
+order: 1
+eleventyComputed:
+  eleventyNavigation:
+    key: "{{ title }}"
+    parent: "{{ parent }}"
+    order: "{{ order }}"
 ---
 
 Hey all.

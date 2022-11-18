@@ -123,6 +123,18 @@ nav {
     }
 
     margin-bottom: $spacing-unit;
+
+    &.breadcrumb {
+        ol,
+        ul {
+            list-style-type: none;
+            margin-left: 0;
+        }
+
+        li:before {
+            content: "> ";
+        }
+    }
 }
 
 @include media-query($small-break) {

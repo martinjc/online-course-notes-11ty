@@ -10,19 +10,17 @@ layout: base.njk
     </h1>
 </header>
 <div class="container">
-    {%- if not env.singlepage %}
-        <nav class="sidebar">
-            <a href='{{ "/" | url }}'>Home</a>
-            <ul>
-                {%- for note in collections.notes | sortByPageOrder -%}
-                    <li>
-                        <a href="{{ note.url | url }}">{{ note.data.title }}</a>
-                    </li>
-                {%- endfor -%}
-            </ul>
-            <a href="{{ '/about/' | url }}">About</a>
-        </nav>
-    {% endif %}
+    <nav class="sidebar">
+        <a href='{{ "/" | url }}'>Home</a>
+        <ul>
+            {%- for note in collections.notes | sortByPageOrder -%}
+                <li>
+                    <a href="{{ note.url | url }}">{{ note.data.title }}</a>
+                </li>
+            {%- endfor -%}
+        </ul>
+        <a href="{{ '/about/' | url }}">About</a>
+    </nav>
     <div class="content">
         {{ content | safe }}
         <div class="nextprev">
@@ -39,11 +37,9 @@ layout: base.njk
                 </p>
             {% endif %}
         </div>
-        {%- if not env.singlepage %}
-            <div class="comments">
-                <script src="https://utteranc.es/client.js" repo="{% reponame pkg.repository.url %}" issue-term="title" theme="github-light" crossorigin="anonymous" async></script>
-            </div>
-        {% endif %}
+        <div class="comments">
+            <script src="https://utteranc.es/client.js" repo="{% reponame pkg.repository.url %}" issue-term="title" theme="github-light" crossorigin="anonymous" async></script>
+        </div>
     </div>
 </div>
 <script>
@@ -56,4 +52,14 @@ layout: base.njk
             d.classList.toggle('selected');
         });
     });
+    const urlParams = new URLSearchParams(window.location.search);
+    const embed = urlParams.get('embed');
+    if (embed) {
+        document.querySelectorAll('.comments').forEach(d => {
+            d.classList.toggle('hidden');
+        });
+        document.querySelectorAll('.sidebar').forEach(d => {
+            d.classList.toggle('hidden');
+        });
+    }
 </script>

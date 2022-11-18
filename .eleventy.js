@@ -1,5 +1,3 @@
-const fs = require('fs').promises;
-
 module.exports = function (eleventyConfig) {
 
     // edit this for any site that isn't hosted on github in a repo called 'online-course-notes-11ty'
@@ -10,12 +8,10 @@ module.exports = function (eleventyConfig) {
     const syntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");
     const markdownItFootnote = require("markdown-it-footnote");
     const markdownItEmoji = require("markdown-it-emoji");
-  const markdownIt = require("markdown-it");
-
+    const markdownIt = require("markdown-it");
 
     // custom shortcodes go in this file
-  const shortcodes = require("./build/shortcodes.js");
-  const pdfPrint = require("./build/printpdf");
+    const shortcodes = require("./build/shortcodes.js");
 
     // are we building for production or development?
     const isProduction = process.env.NODE_ENV === `production`;
@@ -29,7 +25,7 @@ module.exports = function (eleventyConfig) {
     eleventyConfig.setDataDeepMerge(true);
 
     // syntax highlighting
-  eleventyConfig.addPlugin(syntaxHighlight);
+    eleventyConfig.addPlugin(syntaxHighlight);
 
 
     // add footnotes and emoji to the markdown parser
@@ -57,13 +53,6 @@ module.exports = function (eleventyConfig) {
     eleventyConfig.addShortcode("panopto", shortcodes.insertPanopto);
     eleventyConfig.addShortcode("reponame", shortcodes.getRepoName);
     eleventyConfig.addPairedShortcode("panel", shortcodes.insertPanel);
-
-  if (process.env.SINGLE_PAGE) {
-    eleventyConfig.on('eleventy.after', async () => {
-      pdfPrint.findFiles();
-     });
-  }
-
 
     return {
       pathPrefix: isProduction ? PRODUCTION_DIR : '/',

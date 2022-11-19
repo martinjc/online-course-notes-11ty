@@ -67,11 +67,23 @@
     });
     const urlParams = new URLSearchParams(window.location.search);
     const embed = urlParams.get('embed');
-    if (embed) {
+    const print = urlParams.get('print');
+    if (embed || print) {
         document.querySelectorAll('.comments').forEach(d => {
             d.classList.toggle('hidden');
         });
         document.querySelectorAll('.sidebar').forEach(d => {
+            d.classList.toggle('hidden');
+        });
+        document.querySelectorAll('.breadcrumb').forEach(d => {
+            d.classList.toggle('hidden');
+        });
+        document.querySelectorAll('.nextprev').forEach(d => {
+            d.classList.toggle('hidden');
+        });
+    }
+    if(print) {
+        document.querySelectorAll('.panoptoembed').forEach(d => {
             d.classList.toggle('hidden');
         });
     }

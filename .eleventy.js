@@ -11,7 +11,6 @@ module.exports = function (eleventyConfig) {
     const markdownIt = require("markdown-it");
     const eleventyNavigationPlugin = require("@11ty/eleventy-navigation");
 
-
     // custom shortcodes go in this file
     const shortcodes = require("./build/shortcodes.js");
 

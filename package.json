@@ -8,7 +8,6 @@
     "clean": "node -e \"import('fs').then(fs => fs.rmSync('public', { recursive: true, force: true }))\"",
     "start": "npm run clean && eleventy --serve",
     "build": "npm run clean && eleventy",
-    "build:alex": "alex src/",
     "reinstall": "node -e \"import('fs').then(fs => fs.rmSync('node_modules', { recursive: true, force: true }))\" && npm cache verify && npm install"
   },
   "repository": {
@@ -26,7 +25,6 @@
     "@11ty/eleventy-img": "^7.0.0",
     "@11ty/eleventy-navigation": "^0.3.5",
     "@11ty/eleventy-plugin-syntaxhighlight": "^3.2.2",
-    "alex": "^11.0.1",
     "markdown-it-emoji": "^2.0.2",
     "markdown-it-footnote": "^3.0.3",
     "sass": "^1.103.1"

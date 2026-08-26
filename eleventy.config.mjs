@@ -48,7 +48,6 @@ export default function (eleventyConfig) {
     eleventyConfig.addShortcode("image", shortcodes.imageShortcode);
     eleventyConfig.addShortcode("questions", shortcodes.insertQuestions);
     eleventyConfig.addShortcode("panopto", shortcodes.insertPanopto);
-    eleventyConfig.addShortcode("reponame", shortcodes.getRepoName);
     eleventyConfig.addPairedShortcode("panel", shortcodes.insertPanel);
 
     return {

@@ -35,7 +35,7 @@ layout: base.njk
             {% endif %}
         </div>
         <div class="comments mt-12 pt-8 border-t border-border-line">
-            <script src="https://utteranc.es/client.js" repo="{% reponame pkg.repository.url %}" issue-term="title" theme="github-light" crossorigin="anonymous" async></script>
+            <script src="https://utteranc.es/client.js" repo="{{ metadata.commentsRepo }}" issue-term="title" theme="github-light" crossorigin="anonymous" async></script>
         </div>
     </div>
 </div>

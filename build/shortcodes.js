@@ -31,10 +31,6 @@ export default {
 <p><small>If the embed above does not work here is a <a href="https://cardiff.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=${panoptoID}" target="blank">link to the full version of the video</a></small></p>`
     },
 
-    // return the repository name and domain for use in utterace.es comments
-    getRepoName: (url) => {
-        return url.replace('git+https://github.com/', '').replace('.git', '');
-    },
 
     insertPanel: (content, type, header) => {
         let md = new markdownIt();

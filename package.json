@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "a skeleton project using 11ty to generate course notes",
   "type": "module",
-  "main": "index.js",
   "scripts": {
     "clean": "node -e \"import('fs').then(fs => fs.rmSync('public', { recursive: true, force: true }))\"",
     "start": "npm run clean && eleventy --serve",

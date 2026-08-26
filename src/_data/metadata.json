@@ -3,5 +3,6 @@
   "description": "A skeleton template for online course notes using Eleventy.",
   "author": "Martin Chorley",
   "twitter": "@martinjc",
-  "url": "https://github.com/martinjc/online-course-notes-11ty"
+  "url": "https://github.com/martinjc/online-course-notes-11ty",
+  "commentsRepo": "martinjc/online-course-notes-11ty"
 }

@@ -4,23 +4,18 @@ import markdownItEmoji from "markdown-it-emoji";
 import markdownIt from "markdown-it";
 import eleventyNavigationPlugin from "@11ty/eleventy-navigation";
 import shortcodes from "./build/shortcodes.js";
-import * as sass from "sass";
-import fs from "fs";
+import { execSync } from "child_process";
 
 export default function (eleventyConfig) {
     const PRODUCTION_DIR = 'online-course-notes-11ty';
     const isProduction = process.env.ELEVENTY_RUN_MODE === "build" || process.env.NODE_ENV === "production";
 
-    // Watch Sass folder
-    eleventyConfig.addWatchTarget("src/_sass/");
+    // Watch CSS input file
+    eleventyConfig.addWatchTarget("src/css/main.css");
 
-    // Compile Sass before building the site
+    // Compile Tailwind CSS before building the site
     eleventyConfig.on("eleventy.before", async () => {
-        const result = sass.compile("src/_sass/main.scss", {
-            style: isProduction ? "compressed" : "expanded"
-        });
-        fs.mkdirSync("public/css", { recursive: true });
-        fs.writeFileSync("public/css/main.css", result.css);
+        execSync("npx @tailwindcss/cli -i src/css/main.css -o public/css/main.css --minify");
     });
 
     // Copy root files and examples

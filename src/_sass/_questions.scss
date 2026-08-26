@@ -1,3 +1,5 @@
+@use "variables" as *;
+
 .question-block {
     padding: $gap-size;
     border-radius: 4px;

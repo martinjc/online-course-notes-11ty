@@ -11,7 +11,7 @@ layout: base.njk
 </header>
 <div class="container">
     <nav class="sidebar">
-        {{ collections.all | eleventyNavigation | eleventyNavigationToHtml | safe }}
+        {{ collections.all | eleventyNavigation | eleventyNavigationToHtml({ activeKey: eleventyNavigation.key, activeAnchorClass: "active", activeListItemClass: "active-list-item", useAriaCurrentAttr: true }) | safe }}
     </nav>
     <div class="content">
         {% if eleventyNavigation and eleventyNavigation.parent %}

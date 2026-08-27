@@ -53,6 +53,7 @@ export default function (eleventyConfig) {
     eleventyConfig.addShortcode("questions", shortcodes.insertQuestions);
     eleventyConfig.addShortcode("panopto", shortcodes.insertPanopto);
     eleventyConfig.addPairedShortcode("panel", shortcodes.insertPanel);
+    eleventyConfig.addPairedShortcode("accordion", shortcodes.insertAccordion);
 
     return {
       pathPrefix: isProduction ? PRODUCTION_DIR : '/',

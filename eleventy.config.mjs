@@ -1,3 +1,4 @@
+import { HtmlBasePlugin } from "@11ty/eleventy";
 import syntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
 import markdownItFootnote from "markdown-it-footnote";
 import markdownItEmoji from "markdown-it-emoji";
@@ -9,6 +10,9 @@ import { execSync } from "child_process";
 export default function (eleventyConfig) {
     const PRODUCTION_DIR = 'online-course-notes-11ty';
     const isProduction = process.env.ELEVENTY_RUN_MODE === "build" || process.env.NODE_ENV === "production";
+
+    // Enable HTML base plugin for pathPrefix rewriting
+    eleventyConfig.addPlugin(HtmlBasePlugin);
 
     // Watch CSS input file
     eleventyConfig.addWatchTarget("src/css/main.css");

@@ -4,7 +4,7 @@ layout: base.njk
 
 <header class="max-w-5xl mx-auto mb-4 px-4">
     <h1 class="text-3xl font-extrabold">
-        <a href="{{ link or '/' | url }}" class="text-brand hover:text-brand-dark transition-colors">
+        <a href="{{ link or '/' }}" class="text-brand hover:text-brand-dark transition-colors">
             {{ title or eleventyNavigation.title }}
         </a>
     </h1>
@@ -24,13 +24,13 @@ layout: base.njk
             {%- set nextPost = collections.notes | sortByPageOrder | getNextCollectionItem(page) %}
             {%- if nextPost %}
                 <p class="next m-0 text-sm font-bold text-slate flex items-center gap-2 sm:ml-auto">Next:
-                    <a href="{{ nextPost.url | url }}" class="inline-flex items-center px-5 py-2.5 bg-card border border-border-line rounded-full text-brand shadow-cu-sm font-bold hover:bg-red-50 hover:border-brand hover:text-brand-dark hover:-translate-y-0.5 hover:shadow-md transition-all active:translate-y-0">{{ nextPost.data.title }}</a>
+                    <a href="{{ nextPost.url }}" class="inline-flex items-center px-5 py-2.5 bg-card border border-border-line rounded-full text-brand shadow-cu-sm font-bold hover:bg-red-50 hover:border-brand hover:text-brand-dark hover:-translate-y-0.5 hover:shadow-md transition-all active:translate-y-0">{{ nextPost.data.title }}</a>
                 </p>
             {% endif %}
             {%- set previousPost = collections.notes | sortByPageOrder | getPreviousCollectionItem(page) %}
             {%- if previousPost %}
                 <p class="previous m-0 text-sm font-bold text-slate flex items-center gap-2">Previous:
-                    <a href="{{ previousPost.url | url }}" class="inline-flex items-center px-5 py-2.5 bg-card border border-border-line rounded-full text-brand shadow-cu-sm font-bold hover:bg-red-50 hover:border-brand hover:text-brand-dark hover:-translate-y-0.5 hover:shadow-md transition-all active:translate-y-0">{{ previousPost.data.title }}</a>
+                    <a href="{{ previousPost.url }}" class="inline-flex items-center px-5 py-2.5 bg-card border border-border-line rounded-full text-brand shadow-cu-sm font-bold hover:bg-red-50 hover:border-brand hover:text-brand-dark hover:-translate-y-0.5 hover:shadow-md transition-all active:translate-y-0">{{ previousPost.data.title }}</a>
                 </p>
             {% endif %}
         </div>

@@ -69,7 +69,8 @@ body {
     }
   }
 
-  ul, ol {
+  ul,
+  ol {
     margin-left: 1.5rem;
     margin-bottom: 1.5rem;
     color: var(--color-slate);
@@ -116,6 +117,35 @@ body {
     border-radius: 8px;
     max-width: 100%;
     height: auto;
+  }
+
+  table {
+    width: 100%;
+    max-width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+
+    th,
+    td {
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--color-border-line);
+      text-align: left;
+      vertical-align: top;
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+
+    th {
+      background-color: var(--color-cloud);
+      font-weight: 700;
+      color: var(--color-brand-dark);
+    }
+
+    tr:nth-child(even) {
+      background-color: rgba(244, 244, 246, 0.4);
+    }
   }
 }
 
@@ -172,6 +202,7 @@ body {
 
   .panel-body {
     color: var(--color-slate);
+
     p:last-child {
       margin-bottom: 0;
     }
@@ -179,6 +210,7 @@ body {
 
   &.panel-info {
     border-left-color: #007506;
+
     .panel-header {
       color: #007506;
     }
@@ -186,6 +218,7 @@ body {
 
   &.panel-warning {
     border-left-color: var(--color-gold);
+
     .panel-header {
       color: color-mix(in srgb, var(--color-gold) 85%, black);
     }

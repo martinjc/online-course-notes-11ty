@@ -2,22 +2,22 @@
 layout: base.njk
 ---
 
-<header class="max-w-5xl mx-auto mb-4 px-4">
+<header class="max-w-6xl mx-auto mb-4 px-4">
     <h1 class="text-3xl font-extrabold">
         <a href="{{ link or '/' }}" class="text-brand hover:text-brand-dark transition-colors">
             {{ title or eleventyNavigation.title }}
         </a>
     </h1>
 </header>
-<div class="max-w-5xl mx-auto px-4 flex flex-col gap-4 md:grid md:grid-cols-[280px_1fr] md:gap-8 items-start">
+<div class="max-w-6xl mx-auto px-4 flex flex-col gap-4 md:grid md:grid-cols-[280px_1fr] md:gap-8 items-start">
     <nav class="sidebar w-full bg-card rounded-cu p-4 border border-border-line shadow-cu-sm">
         {{ collections.all | eleventyNavigation | eleventyNavigationToHtml({ activeKey: eleventyNavigation.key, activeAnchorClass: "active bg-red-100 text-brand-dark font-bold hover:bg-red-200", activeListItemClass: "active-list-item", useAriaCurrentAttr: true }) | safe }}
     </nav>
-    <div class="content prose w-full bg-card rounded-cu p-6 md:p-8 border border-border-line shadow-cu-lg">
+    <div class="content prose w-full min-w-0 bg-card rounded-cu p-6 md:p-8 border border-border-line shadow-cu-lg">
         {% if eleventyNavigation and eleventyNavigation.parent %}
         <nav class="breadcrumb text-sm mb-6">
         {{ collections.all | eleventyNavigationBreadcrumb(eleventyNavigation.parent, {includeSelf: true}) | eleventyNavigationToHtml | safe }}
-        </nav>
+        </nav> 
         {% endif %}
         {{ content | safe }}
         <div class="nextprev mt-12 pt-8 border-t border-border-line flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center">

@@ -119,6 +119,28 @@ body {
     height: auto;
   }
 
+  figure,
+  .figure {
+    margin-top: 1.75rem;
+    margin-bottom: 1.75rem;
+    text-align: center;
+
+    img {
+      display: inline-block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+  figcaption,
+  .figure-caption {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    color: var(--color-slate);
+    text-align: center;
+  }
+
   table {
     width: 100%;
     max-width: 100%;

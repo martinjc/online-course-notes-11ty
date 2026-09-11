@@ -64,13 +64,29 @@ export default {
 `;
     },
 
-    imageShortcode: async function (src, alt = "", sizes = "(min-width: 30em) 30vw, 100vw") {
+    imageShortcode: async function (src, alt = "", caption = "", sizes = "(min-width: 30em) 30vw, 100vw") {
+        if (typeof src === "object" && src !== null) {
+            ({ src, alt = "", caption = "", sizes = "(min-width: 30em) 30vw, 100vw" } = src);
+        }
+
+        // If 3rd argument was passed as a responsive sizes media query instead of caption
+        if (typeof caption === "string" && (caption.startsWith("(") || caption.endsWith("vw"))) {
+            sizes = caption;
+            caption = "";
+        }
+
+        let captionHtml = "";
+        if (caption && typeof caption === "string" && caption.trim().length > 0) {
+            let md = new markdownIt({ html: true });
+            captionHtml = `\n<figcaption class="figure-caption mt-2 text-sm text-slate text-center">${md.renderInline(caption.trim())}</figcaption>`;
+        }
+
         if (src.endsWith('.gif')) {
             const filename = path.basename(src);
             const destDir = "./public/img/";
             fs.mkdirSync(destDir, { recursive: true });
             fs.copyFileSync(src, path.join(destDir, filename));
-            return `<img src="/img/${filename}" alt="${alt}" loading="lazy" decoding="async">`;
+            return `<figure class="figure my-6 text-center"><img src="/img/${filename}" alt="${alt}" loading="lazy" decoding="async">${captionHtml}</figure>`;
         }
 
         let metadata = await Image(src, {
@@ -86,7 +102,8 @@ export default {
             decoding: "async",
         };
 
-        return Image.generateHTML(metadata, imageAttributes);
+        const imageHtml = Image.generateHTML(metadata, imageAttributes);
+        return `<figure class="figure my-6 text-center">${imageHtml}${captionHtml}</figure>`;
     }
 
 }

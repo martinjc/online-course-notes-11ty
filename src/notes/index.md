@@ -12,7 +12,7 @@ eleventyComputed:
 
 Well, here's a note
 
-{% image "./src/img/bennie.jpg", "a good boy" %}
+{% image "./src/img/bennie.jpg", "a good boy", "Bennie — a very good boy" %}
 
 | Feature / Dimension | Exploratory Data Visualisation | Explanatory Data Visualisation |
 | :--- | :--- | :--- |

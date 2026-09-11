@@ -14,7 +14,7 @@ The styling and visual design use a clean, card-based interface inspired by Card
 *   **Centralized Metadata**: Exposes global site details (`title`, `description`, `author`, `twitter`, `url`) via `src/_data/metadata.json` for consistent layouts.
 *   **Clean and Flexible Design**: Features clean responsive card grids, a structured sidebar navigation, breadcrumbs, custom warning/info panels, and Segoe UI typography.
 *   **Interactive Shortcodes**:
-    *   `image`: Automatically outputs responsive `<picture>` tags using multiple widths and modern formats.
+    *   `image`: Automatically outputs responsive `<picture>` tags inside a semantic `<figure>` with an optional `<figcaption>` in a smaller font.
     *   `questions`: Creates interactive multiple-choice questions with success and failure feedback highlights.
     *   `panel`: Formats visually distinct info, warning, and note panels.
 *   **Utterances Integration**: Displays comment threads backed by GitHub issues on every page.

@@ -16,7 +16,7 @@ The styling and visual design use a clean, card-based interface inspired by Card
 *   **Interactive Shortcodes**:
     *   `image`: Automatically outputs responsive `<picture>` tags inside a semantic `<figure>` with an optional `<figcaption>` in a smaller font.
     *   `questions`: Creates interactive multiple-choice questions with success and failure feedback highlights.
-    *   `panel`: Formats visually distinct info, warning, and note panels.
+    *   `panel`: Formats visually distinct panels (`info`, `warning`, `prompt`, `question`, `aside`) with appropriate color styling and icons.
 *   **Utterances Integration**: Displays comment threads backed by GitHub issues on every page.
 
 ---

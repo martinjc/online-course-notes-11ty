@@ -34,16 +34,34 @@ export default {
     },
 
 
-    insertPanel: (content, type, header) => {
-        let md = new markdownIt();
-        content = md.renderInline(content);
-        let template = ``;
-        template += `
-<div class="panel panel-${type}">
-<div class="panel-header">${header}</div>
+    insertPanel: (content, type = "info", header) => {
+        let md = new markdownIt({ html: true });
+        content = md.render(content.trim());
+        const normalizedType = (type || "info").toLowerCase().trim();
+
+        const panelIcons = {
+            info: `<svg class="panel-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>`,
+            warning: `<svg class="panel-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>`,
+            prompt: `<svg class="panel-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>`,
+            question: `<svg class="panel-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>`,
+            aside: `<svg class="panel-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>`
+        };
+
+        const defaultIcon = `<svg class="panel-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>`;
+
+        const icon = panelIcons[normalizedType] || defaultIcon;
+
+        let title = header;
+        if (title === undefined || title === null) {
+            title = normalizedType.charAt(0).toUpperCase() + normalizedType.slice(1);
+        }
+        const titleHtml = title ? `<span>${title}</span>` : "";
+
+        return `
+<div class="panel panel-${normalizedType}">
+<div class="panel-header">${icon}${titleHtml}</div>
 <div class="panel-body">${content}</div>
-</div>`
-        return template;
+</div>`;
     },
 
     insertAccordion: (content, title) => {

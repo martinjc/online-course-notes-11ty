@@ -25,3 +25,24 @@ Well, here's a note
 | **Focus on Detail** | High depth; displays variance, outliers, and noise | High focus; highlights specific data points and mutes noise |
 | **Primary Workflow** | Fast, flexible, hypothesis-driven iteration | Strategic, audience-centric visual storytelling |
 | **Common Tools** | Python (Seaborn/Matplotlib), R (ggplot2), Jupyter, SQL drafts | PowerPoint, Figma, Datawrapper, Tableau Dashboards, D3.js |
+
+{% panel "info", "Information" %}
+This is an informational panel highlighting helpful context and tips for learners.
+{% endpanel %}
+
+{% panel "warning", "Warning" %}
+Be cautious when interpreting raw data without normalising for confounding factors.
+{% endpanel %}
+
+{% panel "prompt", "Discussion Prompt" %}
+What other visual encodings could be used to effectively represent both positive and negative values?
+{% endpanel %}
+
+{% panel "question", "Check Your Understanding" %}
+Why is explanatory visualisation usually less interactive than exploratory visualisation?
+{% endpanel %}
+
+{% panel "aside", "Historical Note" %}
+The 'Climate Stripes' visualisation was originally designed by Professor Ed Hawkins in 2018.
+{% endpanel %}
+

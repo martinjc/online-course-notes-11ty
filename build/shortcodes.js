@@ -3,7 +3,7 @@ import Image from '@11ty/eleventy-img';
 import fs from "fs";
 import path from "path";
 
-export default {
+const shortcodes = {
     // Embedding questions from data files into the notes page template
     insertQuestions: (questions) => {
         let template = ``;
@@ -66,16 +66,16 @@ export default {
 
     insertAccordion: (content, title) => {
         let md = new markdownIt({ html: true });
-        content = md.render(content);
+        content = md.render(content.trim());
         return `
-<details class="my-6 border border-border-line rounded-lg overflow-hidden bg-card shadow-cu-sm group w-full max-w-full">
+<details class="accordion my-6 border border-border-line rounded-lg overflow-hidden bg-card shadow-cu-sm group w-full max-w-full">
   <summary class="flex justify-between items-center px-5 py-4 font-bold text-ink cursor-pointer list-none select-none hover:bg-red-50 hover:text-brand-dark transition-colors duration-200">
     <span>${title}</span>
     <svg class="w-5 h-5 text-slate group-open:rotate-180 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
     </svg>
   </summary>
-  <div class="px-5 py-4 border-t border-border-line bg-cloud prose overflow-x-auto w-full max-w-full">
+  <div class="accordion-content px-6 py-5 border-t border-border-line prose overflow-x-auto w-full max-w-full">
     ${content}
   </div>
 </details>
@@ -122,7 +122,64 @@ export default {
 
         const imageHtml = Image.generateHTML(metadata, imageAttributes);
         return `<figure class="figure my-6 text-center">${imageHtml}${captionHtml}</figure>`;
+    },
+
+    insertGallery: function (content, title = "Gallery") {
+        const slideMatches = content ? content.match(/data-gallery-slide/g) : null;
+        const slideCount = slideMatches ? slideMatches.length : 1;
+
+        const dotsHtml = Array.from({ length: slideCount }, (_, i) => `<button type="button" class="gallery-dot${i === 0 ? ' active' : ''}" role="tab" aria-selected="${i === 0 ? 'true' : 'false'}" aria-label="Slide ${i + 1}" data-index="${i}"></button>`).join("");
+
+        return `
+<div class="gallery my-8 border border-border-line rounded-cu bg-card shadow-cu-sm overflow-hidden" role="region" aria-roledescription="carousel" aria-label="${title || 'Image Gallery'}">
+  <div class="gallery-header flex items-center justify-between px-5 py-3.5 border-b border-border-line bg-card">
+    <div class="flex items-center gap-2.5 font-bold text-ink text-base">
+      <svg class="w-5 h-5 text-brand shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+      </svg>
+      <span>${title || 'Gallery'}</span>
+    </div>
+    <div class="gallery-counter font-mono text-xs font-bold px-2.5 py-1 rounded-full bg-cloud text-slate">
+      <span class="gallery-current">1</span> / <span class="gallery-total">${slideCount}</span>
+    </div>
+  </div>
+  <div class="gallery-track flex items-start overflow-x-auto overflow-y-visible snap-x snap-mandatory scroll-smooth no-scrollbar focus:outline-none" tabindex="0">
+    ${content}
+  </div>
+  <div class="gallery-footer flex items-center justify-between px-5 py-3 border-t border-border-line bg-cloud">
+    <button type="button" class="gallery-prev inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border-line bg-card hover:bg-white text-ink font-semibold text-sm transition-all shadow-cu-sm hover:border-brand disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:border-border-line" aria-label="Previous slide">
+      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+      <span>Previous</span>
+    </button>
+    <div class="gallery-dots flex items-center gap-2" role="tablist" aria-label="Slides">${dotsHtml}</div>
+    <button type="button" class="gallery-next inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border-line bg-card hover:bg-white text-ink font-semibold text-sm transition-all shadow-cu-sm hover:border-brand disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:border-border-line" aria-label="Next slide">
+      <span>Next</span>
+      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+</div>`;
+    },
+
+    insertGallerySlide: async function (content, src, alt = "", caption = "", sizes = "(min-width: 30em) 30vw, 100vw") {
+        if (typeof src === "object" && src !== null) {
+            ({ src, alt = "", caption = "", sizes = "(min-width: 30em) 30vw, 100vw" } = src);
+        }
+
+        let imageHtml = "";
+        if (src && typeof src === "string" && src.trim().length > 0) {
+            imageHtml = await shortcodes.imageShortcode(src, alt, caption, sizes);
+        }
+
+        const trimmedContent = content ? content.trim() : "";
+
+        return `
+<div class="gallery-slide snap-start shrink-0 w-full min-w-full box-border p-4 md:p-6" data-gallery-slide role="group" aria-roledescription="slide">
+  ${imageHtml}
+  ${trimmedContent ? `<div class="gallery-slide-content prose max-w-full mt-4">${trimmedContent}</div>` : ''}
+</div>`;
     }
 
-}
+};
+
+export default shortcodes;
 

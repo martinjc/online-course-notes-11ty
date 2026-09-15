@@ -17,6 +17,8 @@ The styling and visual design use a clean, card-based interface inspired by Card
     *   `image`: Automatically outputs responsive `<picture>` tags inside a semantic `<figure>` with an optional `<figcaption>` in a smaller font.
     *   `questions`: Creates interactive multiple-choice questions with success and failure feedback highlights.
     *   `panel`: Formats visually distinct panels (`info`, `warning`, `prompt`, `question`, `aside`) with appropriate color styling and icons.
+    *   `accordion`: Creates expandable collapsible sections with distinct background shading to set supplementary content apart from the main narrative.
+    *   `gallery` / `galleryslide`: Creates horizontal scroll-snapping image galleries presenting one slide at a time with captioned responsive images, controls, indicator dots, and support for nested blocks (such as accordions or panels) below each image.
 *   **Utterances Integration**: Displays comment threads backed by GitHub issues on every page.
 
 ---

@@ -54,6 +54,9 @@ export default function (eleventyConfig) {
     eleventyConfig.addShortcode("panopto", shortcodes.insertPanopto);
     eleventyConfig.addPairedShortcode("panel", shortcodes.insertPanel);
     eleventyConfig.addPairedShortcode("accordion", shortcodes.insertAccordion);
+    eleventyConfig.addPairedShortcode("gallery", shortcodes.insertGallery);
+    eleventyConfig.addPairedShortcode("galleryslide", shortcodes.insertGallerySlide);
+    eleventyConfig.addPairedShortcode("slide", shortcodes.insertGallerySlide);
 
     return {
       pathPrefix: isProduction ? PRODUCTION_DIR : '/',

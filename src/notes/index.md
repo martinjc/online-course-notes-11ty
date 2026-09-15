@@ -46,3 +46,32 @@ Why is explanatory visualisation usually less interactive than exploratory visua
 The 'Climate Stripes' visualisation was originally designed by Professor Ed Hawkins in 2018.
 {% endpanel %}
 
+{% accordion "Deep Dive: Choosing Between Exploratory and Explanatory" %}
+When designing a visualisation, begin by clarifying your target audience's core objective:
+
+* **Exploratory**: The user wants freedom to filter, sort, slice, and discover unanticipated patterns.
+* **Explanatory**: The audience needs a curated narrative with cognitive load minimized and key takeaways highlighted immediately.
+{% endaccordion %}
+
+{% gallery "Course Notes Gallery" %}
+{% galleryslide "./src/img/bennie.jpg", "Bennie sitting in the garden", "Figure 1.1: Bennie posing in the grass." %}
+{% accordion "Slide 1 Details: Background Context" %}
+This accordion lives directly below the first image inside the gallery pane! It can contain rich markdown, explanations, and links.
+
+* **Subject**: Golden retriever / mascot
+* **Encoding**: Photographic portrait
+{% endaccordion %}
+{% endgalleryslide %}
+
+{% galleryslide "./src/img/bennie.jpg", "Bennie looking attentive", "Figure 1.2: Close-up analysis of visual features." %}
+{% panel "prompt", "Reflection" %}
+How does breaking visualisations into a multi-pane gallery alter user attention compared to a continuous vertical scroll?
+{% endpanel %}
+{% accordion "Evaluation Framework" %}
+When evaluating multi-part graphics, horizontal galleries keep the viewer focused on one key visual at a time while retaining rich commentary immediately accessible underneath.
+{% endaccordion %}
+{% endgalleryslide %}
+{% endgallery %}
+
+
+

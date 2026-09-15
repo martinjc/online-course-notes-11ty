@@ -336,6 +336,7 @@ body {
     .figure {
       margin-top: 0.25rem;
       margin-bottom: 1rem;
+      position: relative;
 
       img {
         max-height: 480px;
@@ -344,6 +345,48 @@ body {
         object-fit: contain;
         margin-left: auto;
         margin-right: auto;
+        border-radius: 8px;
+        transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease;
+      }
+
+      &.gallery-lightbox-trigger {
+        cursor: zoom-in;
+        display: block;
+        border-radius: 8px;
+
+        &::after {
+          content: "";
+          position: absolute;
+          top: 0.75rem;
+          right: 0.75rem;
+          width: 32px;
+          height: 32px;
+          border-radius: 9999px;
+          background: rgba(15, 23, 42, 0.7) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7'/%3E%3C/svg%3E") no-repeat center center;
+          background-size: 16px 16px;
+          backdrop-filter: blur(4px);
+          opacity: 0;
+          transition: opacity 0.2s ease, transform 0.2s ease;
+          pointer-events: none;
+          transform: scale(0.9);
+        }
+
+        &:hover {
+          img {
+            box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.12);
+            transform: translateY(-2px);
+          }
+
+          &::after {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+
+        &:focus-visible {
+          outline: 2px solid var(--color-brand);
+          outline-offset: 4px;
+        }
       }
     }
 
@@ -376,6 +419,185 @@ body {
       width: 24px;
       background-color: var(--color-brand);
     }
+  }
+}
+
+/* Image Gallery Lightbox Overlay */
+body.lightbox-open {
+  overflow: hidden;
+}
+
+dialog.gallery-dialog {
+  border: none;
+  padding: 0;
+  margin: auto;
+  background: transparent;
+  width: 100vw;
+  height: 100vh;
+  max-width: 100vw;
+  max-height: 100vh;
+  position: fixed;
+  inset: 0;
+  display: none;
+  z-index: 9999;
+
+  &[open] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &::backdrop {
+    background: rgba(15, 23, 42, 0.88);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .gallery-dialog-shell {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 1.5rem;
+    box-sizing: border-box;
+    pointer-events: auto;
+  }
+
+  .gallery-dialog-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 90vw;
+    max-height: 88vh;
+    animation: dialogPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .gallery-dialog-media {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
+    max-height: calc(88vh - 4rem);
+
+    img {
+      max-width: 100%;
+      max-height: calc(88vh - 4rem);
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+      background-color: #0f172a;
+    }
+  }
+
+  .gallery-dialog-caption {
+    margin-top: 1rem;
+    padding: 0.5rem 1.25rem;
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 9999px;
+    color: #f8fafc;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-align: center;
+    max-width: min(720px, 90vw);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+
+    a {
+      color: #93c5fd;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      &:hover {
+        color: #bfdbfe;
+      }
+    }
+  }
+
+  .gallery-dialog-close {
+    position: fixed;
+    top: 1.25rem;
+    right: 1.25rem;
+    z-index: 10001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.08);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-brand);
+      outline-offset: 2px;
+    }
+  }
+
+  .gallery-dialog-nav {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    transition: all 0.2s ease;
+
+    &:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-50%) scale(1.08);
+    }
+
+    &:disabled {
+      opacity: 0.2;
+      cursor: not-allowed;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-brand);
+      outline-offset: 2px;
+    }
+
+    &.gallery-dialog-prev {
+      left: 1.25rem;
+    }
+
+    &.gallery-dialog-next {
+      right: 1.25rem;
+    }
+  }
+}
+
+@keyframes dialogPop {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 

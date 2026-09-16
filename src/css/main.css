@@ -125,6 +125,10 @@ body {
     margin-top: 1.75rem;
     margin-bottom: 1.75rem;
     text-align: center;
+    position: relative;
+    max-width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
 
     img {
       display: inline-block;
@@ -345,48 +349,6 @@ body {
         object-fit: contain;
         margin-left: auto;
         margin-right: auto;
-        border-radius: 8px;
-        transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease;
-      }
-
-      &.gallery-lightbox-trigger {
-        cursor: zoom-in;
-        display: block;
-        border-radius: 8px;
-
-        &::after {
-          content: "";
-          position: absolute;
-          top: 0.75rem;
-          right: 0.75rem;
-          width: 32px;
-          height: 32px;
-          border-radius: 9999px;
-          background: rgba(15, 23, 42, 0.7) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7'/%3E%3C/svg%3E") no-repeat center center;
-          background-size: 16px 16px;
-          backdrop-filter: blur(4px);
-          opacity: 0;
-          transition: opacity 0.2s ease, transform 0.2s ease;
-          pointer-events: none;
-          transform: scale(0.9);
-        }
-
-        &:hover {
-          img {
-            box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.12);
-            transform: translateY(-2px);
-          }
-
-          &::after {
-            opacity: 1;
-            transform: scale(1);
-          }
-        }
-
-        &:focus-visible {
-          outline: 2px solid var(--color-brand);
-          outline-offset: 4px;
-        }
       }
     }
 
@@ -422,7 +384,54 @@ body {
   }
 }
 
-/* Image Gallery Lightbox Overlay */
+/* Image Lightbox Trigger & Overlay */
+.lightbox-trigger,
+.gallery-lightbox-trigger {
+  cursor: zoom-in;
+  position: relative;
+  display: block;
+  border-radius: 8px;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 9999px;
+    background: rgba(15, 23, 42, 0.7) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7'/%3E%3C/svg%3E") no-repeat center center;
+    background-size: 16px 16px;
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    pointer-events: none;
+    transform: scale(0.9);
+  }
+
+  img {
+    border-radius: 8px;
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease;
+  }
+
+  &:hover {
+    img {
+      box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.12);
+      transform: translateY(-2px);
+    }
+
+    &::after {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 4px;
+  }
+}
+
 body.lightbox-open {
   overflow: hidden;
 }

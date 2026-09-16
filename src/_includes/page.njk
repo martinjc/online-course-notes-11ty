@@ -109,21 +109,7 @@ layout: base.njk
         let activeGallery = null;
         let activeSlideIndex = 0;
 
-        function showLightboxSlide(gallery, index) {
-            if (!lightbox || !gallery) return;
-            const slides = gallery.querySelectorAll('.gallery-slide');
-            if (index < 0 || index >= slides.length) return;
-
-            activeGallery = gallery;
-            activeSlideIndex = index;
-
-            const slide = slides[index];
-            const figure = slide.querySelector('figure, .figure');
-            if (!figure) return;
-
-            const picOrImg = figure.querySelector('picture, img');
-            if (!picOrImg) return;
-
+        function openLightboxMedia(picOrImg, captionHtml = '') {
             // Clone picture or img for display in lightbox
             const clone = picOrImg.cloneNode(true);
 
@@ -139,14 +125,37 @@ layout: base.njk
             dialogMedia.innerHTML = '';
             dialogMedia.appendChild(clone);
 
-            const figcaption = figure.querySelector('figcaption, .figure-caption');
-            if (figcaption && figcaption.textContent.trim().length > 0) {
-                dialogCaption.innerHTML = figcaption.innerHTML;
+            if (captionHtml && captionHtml.trim().length > 0) {
+                dialogCaption.innerHTML = captionHtml;
                 dialogCaption.style.display = 'block';
             } else {
                 dialogCaption.innerHTML = '';
                 dialogCaption.style.display = 'none';
             }
+
+            if (!lightbox.open) {
+                lightbox.showModal();
+                document.body.classList.add('lightbox-open');
+            }
+        }
+
+        function showLightboxSlide(gallery, index) {
+            if (!lightbox || !gallery) return;
+            const slides = gallery.querySelectorAll('.gallery-slide');
+            if (index < 0 || index >= slides.length) return;
+
+            activeGallery = gallery;
+            activeSlideIndex = index;
+
+            const slide = slides[index];
+            const figure = slide.querySelector('figure, .figure');
+            if (!figure) return;
+
+            const picOrImg = figure.querySelector('picture, img');
+            if (!picOrImg) return;
+
+            const figcaption = figure.querySelector('figcaption, .figure-caption');
+            const captionHtml = (figcaption && figcaption.textContent.trim().length > 0) ? figcaption.innerHTML : '';
 
             // Update prev/next button states
             if (slides.length <= 1) {
@@ -163,10 +172,34 @@ layout: base.njk
                 }
             }
 
-            if (!lightbox.open) {
-                lightbox.showModal();
-                document.body.classList.add('lightbox-open');
+            openLightboxMedia(picOrImg, captionHtml);
+        }
+
+        function showLightboxSingle(figureOrImg) {
+            if (!lightbox || !figureOrImg) return;
+            activeGallery = null;
+
+            if (dialogPrev) dialogPrev.style.display = 'none';
+            if (dialogNext) dialogNext.style.display = 'none';
+
+            let picOrImg = null;
+            let captionHtml = '';
+
+            if (figureOrImg.tagName === 'FIGURE' || figureOrImg.classList.contains('figure')) {
+                picOrImg = figureOrImg.querySelector('picture, img');
+                const figcaption = figureOrImg.querySelector('figcaption, .figure-caption');
+                if (figcaption && figcaption.textContent.trim().length > 0) {
+                    captionHtml = figcaption.innerHTML;
+                }
+            } else if (figureOrImg.tagName === 'IMG' || figureOrImg.tagName === 'PICTURE') {
+                picOrImg = figureOrImg;
+                if (figureOrImg.getAttribute('alt')) {
+                    captionHtml = figureOrImg.getAttribute('alt');
+                }
             }
+
+            if (!picOrImg) return;
+            openLightboxMedia(picOrImg, captionHtml);
         }
 
         function closeLightbox() {
@@ -231,6 +264,33 @@ layout: base.njk
             });
         }
 
+        // Bind click handlers to standalone images/figures outside of galleries
+        document.querySelectorAll('.prose figure, .prose .figure, .prose p > img, .prose > img').forEach(el => {
+            if (el.closest('.gallery')) return;
+
+            const picOrImg = (el.tagName === 'IMG' || el.tagName === 'PICTURE') ? el : el.querySelector('picture, img');
+            if (!picOrImg) return;
+
+            el.classList.add('lightbox-trigger');
+            el.setAttribute('title', 'Click to enlarge');
+            el.setAttribute('role', 'button');
+            el.setAttribute('tabindex', '0');
+            el.setAttribute('aria-haspopup', 'dialog');
+
+            function triggerOpen(e) {
+                if (e.target.closest('a')) return;
+                showLightboxSingle(el);
+            }
+
+            el.addEventListener('click', triggerOpen);
+            el.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    triggerOpen(e);
+                }
+            });
+        });
+
         document.querySelectorAll('.gallery').forEach(gallery => {
             const track = gallery.querySelector('.gallery-track');
             if (!track) return;
@@ -247,7 +307,7 @@ layout: base.njk
                 const figure = slide.querySelector('figure, .figure');
                 if (!figure) return;
 
-                figure.classList.add('gallery-lightbox-trigger');
+                figure.classList.add('lightbox-trigger', 'gallery-lightbox-trigger');
                 figure.setAttribute('title', 'Click to enlarge');
                 figure.setAttribute('role', 'button');
                 figure.setAttribute('tabindex', '0');

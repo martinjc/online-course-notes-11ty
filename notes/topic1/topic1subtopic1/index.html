@@ -40,17 +40,93 @@
 </header>
 <div class="max-w-6xl mx-auto px-4 flex flex-col gap-4 md:grid md:grid-cols-[280px_1fr] md:gap-8 items-start">
     <nav class="sidebar w-full bg-card rounded-cu p-4 border border-border-line shadow-cu-sm">
-        <ul><li><a href="/online-course-notes-11ty/">Course Notes</a><ul><li><a href="/online-course-notes-11ty/notes/topic1/">First Notes Topic</a><ul><li class="active-list-item"><a href="/online-course-notes-11ty/notes/topic1/topic1subtopic1/" class="active bg-red-100 text-brand-dark font-bold hover:bg-red-200">First Subtopic, First Notes Topic</a></li>
+        <ul><li class="has-children"><a href="/online-course-notes-11ty/">Course Notes</a><ul><li class="has-children"><a href="/online-course-notes-11ty/notes/topic1/">First Notes Topic</a><ul><li class="active-list-item"><a href="/online-course-notes-11ty/notes/topic1/topic1subtopic1/" class="active bg-red-100 text-brand-dark font-bold hover:bg-red-200">First Subtopic, First Notes Topic</a></li>
 <li><a href="/online-course-notes-11ty/notes/topic1/topic1subtopic2/">Second Subtopic, First Notes Topic</a></li></ul></li>
-<li><a href="/online-course-notes-11ty/notes/topic2/">Second Notes Topic</a><ul><li><a href="/online-course-notes-11ty/notes/topic2/topic2subtopic1/">First Subtopic, Second Notes Topic</a></li>
+<li class="has-children"><a href="/online-course-notes-11ty/notes/topic2/">Second Notes Topic</a><ul><li><a href="/online-course-notes-11ty/notes/topic2/topic2subtopic1/">First Subtopic, Second Notes Topic</a></li>
 <li><a href="/online-course-notes-11ty/notes/topic2/topic2subtopic2/">Second Subtopic, Second Notes Topic</a></li></ul></li></ul></li></ul>
     </nav>
     <div class="content prose w-full min-w-0 bg-card rounded-cu p-6 md:p-8 border border-border-line shadow-cu-lg">
         
-        <nav class="breadcrumb text-sm mb-6">
-        <ul><li><a href="/online-course-notes-11ty/">Course Notes</a></li>
-<li><a href="/online-course-notes-11ty/notes/topic1/">First Notes Topic</a></li></ul>
+        
+        
+        <nav class="breadcrumb not-prose mb-6" aria-label="Page hierarchy">
+            <div class="breadcrumb-container">
+                <ol class="breadcrumb-tree">
+                    
+                        
+                        
+                        <li class="breadcrumb-step depth-0" style="--depth: 0;">
+                            
+                            <div class="breadcrumb-node">
+                                
+                                <a href="/online-course-notes-11ty/" class="breadcrumb-link">
+                                    <span class="breadcrumb-node-icon" aria-hidden="true">
+                                        
+                                        <svg viewBox="0 0 20 20" fill="currentColor">
+                                            <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
+                                        </svg>
+                                        
+                                    </span>
+                                    <span class="breadcrumb-title">Course Notes</span>
+                                </a>
+                                
+                            </div>
+                        </li>
+                    
+                        
+                        
+                        <li class="breadcrumb-step depth-1" style="--depth: 1;">
+                            
+                            <div class="breadcrumb-branch" aria-hidden="true">
+                                <svg class="breadcrumb-elbow-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" preserveAspectRatio="none">
+                                    <path d="M4 0v14a4 4 0 0 0 4 4h14"></path>
+                                </svg>
+                            </div>
+                            
+                            <div class="breadcrumb-node">
+                                
+                                <a href="/online-course-notes-11ty/notes/topic1/" class="breadcrumb-link">
+                                    <span class="breadcrumb-node-icon" aria-hidden="true">
+                                        
+                                        <svg viewBox="0 0 20 20" fill="currentColor">
+                                            <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"></path>
+                                        </svg>
+                                        
+                                    </span>
+                                    <span class="breadcrumb-title">First Notes Topic</span>
+                                </a>
+                                
+                            </div>
+                        </li>
+                    
+                        
+                        
+                        <li class="breadcrumb-step depth-2 is-current" style="--depth: 2;">
+                            
+                            <div class="breadcrumb-branch" aria-hidden="true">
+                                <svg class="breadcrumb-elbow-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" preserveAspectRatio="none">
+                                    <path d="M4 0v14a4 4 0 0 0 4 4h14"></path>
+                                </svg>
+                            </div>
+                            
+                            <div class="breadcrumb-node">
+                                
+                                <span class="breadcrumb-current" aria-current="page">
+                                    <span class="breadcrumb-node-icon breadcrumb-node-icon-current" aria-hidden="true">
+                                        <svg viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"></path>
+                                        </svg>
+                                    </span>
+                                    <span class="breadcrumb-title">First Subtopic, First Notes Topic</span>
+                                </span>
+                                
+                            </div>
+                        </li>
+                    
+                </ol>
+            </div>
         </nav> 
+        
         
         <p>Well, here’s a note</p>
 <figure class="figure my-6 text-center"><picture><source type="image/avif" srcset="/online-course-notes-11ty/img/0Qhk3haOiX-640.avif 640w, /online-course-notes-11ty/img/0Qhk3haOiX-768.avif 768w, /online-course-notes-11ty/img/0Qhk3haOiX-1024.avif 1024w, /online-course-notes-11ty/img/0Qhk3haOiX-1366.avif 1366w, /online-course-notes-11ty/img/0Qhk3haOiX-1600.avif 1600w, /online-course-notes-11ty/img/0Qhk3haOiX-1920.avif 1920w" sizes="(min-width: 30em) 30vw, 100vw"><img src="/online-course-notes-11ty/img/0Qhk3haOiX-640.jpeg" alt="a good boy" loading="lazy" decoding="async" width="1920" height="2550" srcset="/online-course-notes-11ty/img/0Qhk3haOiX-640.jpeg 640w, /online-course-notes-11ty/img/0Qhk3haOiX-768.jpeg 768w, /online-course-notes-11ty/img/0Qhk3haOiX-1024.jpeg 1024w, /online-course-notes-11ty/img/0Qhk3haOiX-1366.jpeg 1366w, /online-course-notes-11ty/img/0Qhk3haOiX-1600.jpeg 1600w, /online-course-notes-11ty/img/0Qhk3haOiX-1920.jpeg 1920w" sizes="(min-width: 30em) 30vw, 100vw"></picture>
@@ -610,10 +686,88 @@
         });
     }
 
+    // 4. Collapsible Sidebar Navigation
+    function initSidebarNav() {
+        const sidebar = document.querySelector('.sidebar');
+        if (!sidebar) return;
+
+        const rootList = sidebar.querySelector(':scope > ul');
+        if (!rootList) return;
+
+        const rootLis = rootList.querySelectorAll(':scope > li');
+        const allHasChildren = Array.from(sidebar.querySelectorAll('li.has-children'));
+        if (!allHasChildren.length) return;
+
+        // Exclude the top-level course root container if it's a single parent
+        const collapsibleLis = (rootLis.length === 1 && allHasChildren[0] === rootLis[0])
+            ? allHasChildren.slice(1)
+            : allHasChildren;
+
+        collapsibleLis.forEach((li, index) => {
+            const link = li.querySelector(':scope > a');
+            const childUl = li.querySelector(':scope > ul');
+            if (!link || !childUl) return;
+
+            childUl.classList.add('sidebar-sublist');
+            const sublistId = `sidebar-sublist-${index}`;
+            childUl.id = sublistId;
+
+            // Check if this section is currently active or contains the active page
+            const isActive = li.classList.contains('active-list-item') ||
+                             link.classList.contains('active') ||
+                             li.querySelector('.active-list-item, .active') !== null;
+
+            // Create toggle button
+            const toggleBtn = document.createElement('button');
+            toggleBtn.type = 'button';
+            toggleBtn.className = 'sidebar-toggle';
+            toggleBtn.setAttribute('aria-controls', sublistId);
+            toggleBtn.setAttribute('aria-expanded', isActive ? 'true' : 'false');
+            const sectionTitle = link.textContent.trim();
+            toggleBtn.setAttribute('aria-label', `${isActive ? 'Collapse' : 'Expand'} ${sectionTitle} subtopics`);
+
+            toggleBtn.innerHTML = `
+                <svg class="sidebar-chevron" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+                </svg>
+            `;
+
+            // Wrap link and toggle button in a header row
+            const headerRow = document.createElement('div');
+            headerRow.className = 'sidebar-section-header';
+            link.parentNode.insertBefore(headerRow, link);
+            headerRow.appendChild(link);
+            headerRow.appendChild(toggleBtn);
+
+            // Apply initial expanded/collapsed state
+            if (isActive) {
+                li.classList.add('is-expanded');
+                childUl.classList.remove('hidden');
+            } else {
+                li.classList.remove('is-expanded');
+                childUl.classList.add('hidden');
+            }
+
+            // Toggle on click
+            toggleBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const currentlyExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+                const nextState = !currentlyExpanded;
+
+                toggleBtn.setAttribute('aria-expanded', nextState ? 'true' : 'false');
+                toggleBtn.setAttribute('aria-label', `${nextState ? 'Collapse' : 'Expand'} ${sectionTitle} subtopics`);
+                li.classList.toggle('is-expanded', nextState);
+                childUl.classList.toggle('hidden', !nextState);
+            });
+        });
+    }
+
     // Initialize all components on page load
     initInteractiveQuestions();
     initEmbedAndPrintModes();
     initLightboxAndGalleries();
+    initSidebarNav();
 </script>
   </body>
 </html>

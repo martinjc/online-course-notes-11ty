@@ -40,9 +40,9 @@
 </header>
 <div class="max-w-6xl mx-auto px-4 flex flex-col gap-4 md:grid md:grid-cols-[280px_1fr] md:gap-8 items-start">
     <nav class="sidebar w-full bg-card rounded-cu p-4 border border-border-line shadow-cu-sm">
-        <ul><li class="active-list-item"><a href="/online-course-notes-11ty/" class="active bg-red-100 text-brand-dark font-bold hover:bg-red-200">Course Notes</a><ul><li><a href="/online-course-notes-11ty/notes/topic1/">First Notes Topic</a><ul><li><a href="/online-course-notes-11ty/notes/topic1/topic1subtopic1/">First Subtopic, First Notes Topic</a></li>
+        <ul><li class="active-list-item has-children"><a href="/online-course-notes-11ty/" class="active bg-red-100 text-brand-dark font-bold hover:bg-red-200">Course Notes</a><ul><li class="has-children"><a href="/online-course-notes-11ty/notes/topic1/">First Notes Topic</a><ul><li><a href="/online-course-notes-11ty/notes/topic1/topic1subtopic1/">First Subtopic, First Notes Topic</a></li>
 <li><a href="/online-course-notes-11ty/notes/topic1/topic1subtopic2/">Second Subtopic, First Notes Topic</a></li></ul></li>
-<li><a href="/online-course-notes-11ty/notes/topic2/">Second Notes Topic</a><ul><li><a href="/online-course-notes-11ty/notes/topic2/topic2subtopic1/">First Subtopic, Second Notes Topic</a></li>
+<li class="has-children"><a href="/online-course-notes-11ty/notes/topic2/">Second Notes Topic</a><ul><li><a href="/online-course-notes-11ty/notes/topic2/topic2subtopic1/">First Subtopic, Second Notes Topic</a></li>
 <li><a href="/online-course-notes-11ty/notes/topic2/topic2subtopic2/">Second Subtopic, Second Notes Topic</a></li></ul></li></ul></li></ul>
     </nav>
     <div class="content prose w-full min-w-0 bg-card rounded-cu p-6 md:p-8 border border-border-line shadow-cu-lg">
@@ -435,10 +435,88 @@
         });
     }
 
+    // 4. Collapsible Sidebar Navigation
+    function initSidebarNav() {
+        const sidebar = document.querySelector('.sidebar');
+        if (!sidebar) return;
+
+        const rootList = sidebar.querySelector(':scope > ul');
+        if (!rootList) return;
+
+        const rootLis = rootList.querySelectorAll(':scope > li');
+        const allHasChildren = Array.from(sidebar.querySelectorAll('li.has-children'));
+        if (!allHasChildren.length) return;
+
+        // Exclude the top-level course root container if it's a single parent
+        const collapsibleLis = (rootLis.length === 1 && allHasChildren[0] === rootLis[0])
+            ? allHasChildren.slice(1)
+            : allHasChildren;
+
+        collapsibleLis.forEach((li, index) => {
+            const link = li.querySelector(':scope > a');
+            const childUl = li.querySelector(':scope > ul');
+            if (!link || !childUl) return;
+
+            childUl.classList.add('sidebar-sublist');
+            const sublistId = `sidebar-sublist-${index}`;
+            childUl.id = sublistId;
+
+            // Check if this section is currently active or contains the active page
+            const isActive = li.classList.contains('active-list-item') ||
+                             link.classList.contains('active') ||
+                             li.querySelector('.active-list-item, .active') !== null;
+
+            // Create toggle button
+            const toggleBtn = document.createElement('button');
+            toggleBtn.type = 'button';
+            toggleBtn.className = 'sidebar-toggle';
+            toggleBtn.setAttribute('aria-controls', sublistId);
+            toggleBtn.setAttribute('aria-expanded', isActive ? 'true' : 'false');
+            const sectionTitle = link.textContent.trim();
+            toggleBtn.setAttribute('aria-label', `${isActive ? 'Collapse' : 'Expand'} ${sectionTitle} subtopics`);
+
+            toggleBtn.innerHTML = `
+                <svg class="sidebar-chevron" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+                </svg>
+            `;
+
+            // Wrap link and toggle button in a header row
+            const headerRow = document.createElement('div');
+            headerRow.className = 'sidebar-section-header';
+            link.parentNode.insertBefore(headerRow, link);
+            headerRow.appendChild(link);
+            headerRow.appendChild(toggleBtn);
+
+            // Apply initial expanded/collapsed state
+            if (isActive) {
+                li.classList.add('is-expanded');
+                childUl.classList.remove('hidden');
+            } else {
+                li.classList.remove('is-expanded');
+                childUl.classList.add('hidden');
+            }
+
+            // Toggle on click
+            toggleBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const currentlyExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+                const nextState = !currentlyExpanded;
+
+                toggleBtn.setAttribute('aria-expanded', nextState ? 'true' : 'false');
+                toggleBtn.setAttribute('aria-label', `${nextState ? 'Collapse' : 'Expand'} ${sectionTitle} subtopics`);
+                li.classList.toggle('is-expanded', nextState);
+                childUl.classList.toggle('hidden', !nextState);
+            });
+        });
+    }
+
     // Initialize all components on page load
     initInteractiveQuestions();
     initEmbedAndPrintModes();
     initLightboxAndGalleries();
+    initSidebarNav();
 </script>
   </body>
 </html>

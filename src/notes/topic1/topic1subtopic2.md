@@ -1,8 +1,8 @@
 ---
 layout: page
-order: 1
-title: First Notes Page
-parent: Course Notes
+order: 2
+title: Second Subtopic, First Notes Topic
+parent: First Notes Topic
 eleventyComputed:
   eleventyNavigation:
     key: "{{ title }}"

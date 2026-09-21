@@ -3,6 +3,17 @@ import Image from '@11ty/eleventy-img';
 import fs from "fs";
 import path from "path";
 
+// Shared markdown-it instance for performance
+const md = new markdownIt({ html: true });
+
+function escapeAttr(str) {
+    return String(str || "")
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+}
+
 const shortcodes = {
     // Embedding questions from data files into the notes page template
     insertQuestions: (questions) => {
@@ -13,8 +24,8 @@ const shortcodes = {
 <p class="question" id="q${i}">${q.question}</p>`;
             q.answers.forEach((a, j) => {
                 template += `
-<div class="answer-block" id="a-block${j}" data-correct="${a.correct}">
-<p class="answer" id="a${j}">${a.answer}</p>
+<div class="answer-block" id="q${i}-a-block${j}" role="button" tabindex="0" aria-pressed="false" data-correct="${a.correct}">
+<p class="answer" id="q${i}-a${j}">${a.answer}</p>
 <p class="feedback hidden">${a.feedback}</p>
 </div>
                 `;
@@ -26,16 +37,14 @@ const shortcodes = {
         return template;
     },
 
-    // Alright, this one is going to get very little use unless you are also an academic at Cardiff University who wants to embed videos from our Panopto instance into your course notes...
+    // Panopto embed shortcode
     insertPanopto: (panoptoID) => {
         return `
 <div class="panoptoembed"><iframe src="https://cardiff.cloud.panopto.eu/Panopto/Pages/Embed.aspx?id=${panoptoID}&v=1" width="600" height="320" style="padding: 0px; border: 1px solid #464646;" frameborder="0" allowfullscreen allow="autoplay"></iframe></div>
-<p><small>If the embed above does not work here is a <a href="https://cardiff.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=${panoptoID}" target="blank">link to the full version of the video</a></small></p>`
+<p><small>If the embed above does not work here is a <a href="https://cardiff.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=${panoptoID}" target="_blank" rel="noopener noreferrer">link to the full version of the video</a></small></p>`;
     },
 
-
     insertPanel: (content, type = "info", header) => {
-        let md = new markdownIt({ html: true });
         content = md.render(content.trim());
         const normalizedType = (type || "info").toLowerCase().trim();
 
@@ -65,7 +74,6 @@ const shortcodes = {
     },
 
     insertAccordion: (content, title) => {
-        let md = new markdownIt({ html: true });
         content = md.render(content.trim());
         return `
 <details class="accordion my-6 border border-border-line rounded-lg overflow-hidden bg-card shadow-cu-sm group w-full max-w-full">
@@ -95,7 +103,6 @@ const shortcodes = {
 
         let captionHtml = "";
         if (caption && typeof caption === "string" && caption.trim().length > 0) {
-            let md = new markdownIt({ html: true });
             captionHtml = `\n<figcaption class="figure-caption mt-2 text-sm text-slate text-center">${md.renderInline(caption.trim())}</figcaption>`;
         }
 
@@ -130,8 +137,10 @@ const shortcodes = {
 
         const dotsHtml = Array.from({ length: slideCount }, (_, i) => `<button type="button" class="gallery-dot${i === 0 ? ' active' : ''}" role="tab" aria-selected="${i === 0 ? 'true' : 'false'}" aria-label="Slide ${i + 1}" data-index="${i}"></button>`).join("");
 
+        const escapedTitle = escapeAttr(title || 'Gallery');
+
         return `
-<div class="gallery my-8 border border-border-line rounded-cu bg-card shadow-cu-sm overflow-hidden" role="region" aria-roledescription="carousel" aria-label="${title || 'Image Gallery'}">
+<div class="gallery my-8 border border-border-line rounded-cu bg-card shadow-cu-sm overflow-hidden" role="region" aria-roledescription="carousel" aria-label="${escapedTitle}">
   <div class="gallery-header flex items-center justify-between px-5 py-3.5 border-b border-border-line bg-card">
     <div class="flex items-center gap-2.5 font-bold text-ink text-base">
       <svg class="w-5 h-5 text-brand shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -171,11 +180,12 @@ const shortcodes = {
         }
 
         const trimmedContent = content ? content.trim() : "";
+        const renderedContent = trimmedContent ? md.render(trimmedContent) : "";
 
         return `
 <div class="gallery-slide snap-start shrink-0 w-full min-w-full box-border p-4 md:p-6" data-gallery-slide role="group" aria-roledescription="slide">
   ${imageHtml}
-  ${trimmedContent ? `<div class="gallery-slide-content prose max-w-full mt-4">${trimmedContent}</div>` : ''}
+  ${renderedContent ? `<div class="gallery-slide-content prose max-w-full mt-4">${renderedContent}</div>` : ''}
 </div>`;
     }
 

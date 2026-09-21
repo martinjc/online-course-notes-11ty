@@ -7,7 +7,6 @@
   --color-slate: #4a4a52;
   --color-cloud: #f4f4f6;
   --color-border-line: #e2e2e8;
-  --color-gold: #ffb300;
   --color-card: #ffffff;
 
   --radius-cu: 14px;
@@ -629,6 +628,12 @@ dialog.gallery-dialog {
   .answer-block {
     margin-bottom: 0.75rem;
     cursor: pointer;
+
+    &:focus-visible {
+      outline: 2px solid var(--color-brand);
+      outline-offset: 3px;
+      border-radius: 8px;
+    }
 
     .answer {
       background-color: var(--color-white);

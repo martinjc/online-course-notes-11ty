@@ -2,6 +2,7 @@ import markdownIt from "markdown-it";
 import Image from '@11ty/eleventy-img';
 import fs from "fs";
 import path from "path";
+import eleventyNavigationPlugin from "@11ty/eleventy-navigation";
 
 // Shared markdown-it instance for performance
 const md = new markdownIt({ html: true });
@@ -12,6 +13,36 @@ function escapeAttr(str) {
         .replace(/"/g, '&quot;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;');
+}
+
+function renderNavTreeIcon(item, isCurrent) {
+    if (isCurrent) {
+        return `<svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd" /></svg>`;
+    }
+    if (item.depth === 0) {
+        return `<svg viewBox="0 0 20 20" fill="currentColor"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" /></svg>`;
+    }
+    if (item.hasChildren) {
+        return `<svg viewBox="0 0 20 20" fill="currentColor"><path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" /></svg>`;
+    }
+    return `<svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd" /></svg>`;
+}
+
+function flattenNavTree(items, depth = 0, result = []) {
+    if (!items || !Array.isArray(items)) return result;
+    for (const item of items) {
+        result.push({
+            key: item.key,
+            title: item.title || item.key,
+            url: item.url,
+            depth,
+            hasChildren: Boolean(item.children && item.children.length > 0)
+        });
+        if (item.children && item.children.length > 0) {
+            flattenNavTree(item.children, depth + 1, result);
+        }
+    }
+    return result;
 }
 
 const shortcodes = {
@@ -187,6 +218,81 @@ const shortcodes = {
   ${imageHtml}
   ${renderedContent ? `<div class="gallery-slide-content prose max-w-full mt-4">${renderedContent}</div>` : ''}
 </div>`;
+    },
+
+    insertToc: function (arg1, arg2, fallbackNodes = []) {
+        let rootKey = "";
+        let title = "";
+        let nodes = fallbackNodes;
+
+        if (Array.isArray(arg1)) {
+            nodes = arg1;
+            if (typeof arg2 === "string") rootKey = arg2;
+            else if (typeof arg2 === "object" && arg2 !== null) {
+                rootKey = arg2.root || arg2.key || "";
+                title = arg2.title || "";
+            }
+        } else if (typeof arg1 === "string") {
+            rootKey = arg1;
+            if (Array.isArray(arg2)) nodes = arg2;
+        } else if (typeof arg1 === "object" && arg1 !== null) {
+            rootKey = arg1.root || arg1.key || "";
+            title = arg1.title || "";
+            if (Array.isArray(arg1.nodes || arg1.collection)) {
+                nodes = arg1.nodes || arg1.collection;
+            }
+        }
+
+        if (!nodes || nodes.length === 0) {
+            nodes = this?.ctx?.collections?.all || this?.context?.environments?.collections?.all || fallbackNodes || [];
+        }
+
+        if (!nodes || nodes.length === 0) {
+            return "";
+        }
+
+        const fullTree = eleventyNavigationPlugin.navigation.find(nodes);
+        let targetTree = fullTree;
+
+        if (rootKey) {
+            function findNode(list) {
+                for (const item of list) {
+                    if (item.key === rootKey || item.title === rootKey) return item;
+                    if (item.children && item.children.length > 0) {
+                        const found = findNode(item.children);
+                        if (found) return found;
+                    }
+                }
+                return null;
+            }
+            const foundNode = findNode(fullTree);
+            if (foundNode) {
+                targetTree = [foundNode];
+            } else {
+                targetTree = eleventyNavigationPlugin.navigation.find(nodes, rootKey);
+            }
+        }
+
+        const flatItems = flattenNavTree(targetTree, 0);
+        if (flatItems.length === 0) return "";
+
+        const currentUrl = this?.page?.url || this?.ctx?.page?.url || this?.context?.environments?.page?.url || "";
+
+        let titleHtml = "";
+        if (title) {
+            titleHtml = `<div class="toc-header nav-tree-header"><svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10zm0 5.25a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75a.75.75 0 01-.75-.75z" clip-rule="evenodd" /></svg><span>${escapeAttr(title)}</span></div>`;
+        }
+
+        const itemsHtml = flatItems.map((item) => {
+            const isCurrent = Boolean(currentUrl && item.url === currentUrl);
+            const branchHtml = item.depth > 0 ? `<div class="toc-branch nav-tree-branch" aria-hidden="true"><svg class="toc-elbow-svg nav-tree-elbow-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" preserveAspectRatio="none"><path d="M4 0v14a4 4 0 0 0 4 4h14" /></svg></div>` : "";
+
+            const nodeContentHtml = isCurrent ? `<span class="toc-current nav-tree-current" aria-current="page"><span class="toc-node-icon nav-tree-node-icon nav-tree-node-icon-current" aria-hidden="true">${renderNavTreeIcon(item, true)}</span><span class="toc-title nav-tree-title font-bold">${escapeAttr(item.title)}</span></span>` : `<a href="${item.url}" class="toc-link nav-tree-link"><span class="toc-node-icon nav-tree-node-icon" aria-hidden="true">${renderNavTreeIcon(item, false)}</span><span class="toc-title nav-tree-title">${escapeAttr(item.title)}</span></a>`;
+
+            return `<li class="toc-step nav-tree-step depth-${item.depth}${isCurrent ? ' is-current' : ''}" style="--depth: ${item.depth};">${branchHtml}<div class="toc-node nav-tree-node">${nodeContentHtml}</div></li>`;
+        }).join("");
+
+        return `<nav class="toc toc-nav nav-tree-nav not-prose my-6" aria-label="${escapeAttr(title || 'Table of contents')}"><div class="toc-container nav-tree-container">${titleHtml}<ol class="toc-tree nav-tree">${itemsHtml}</ol></div></nav>`;
     }
 
 };

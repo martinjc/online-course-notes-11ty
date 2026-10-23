@@ -6,10 +6,39 @@ import markdownIt from "markdown-it";
 import eleventyNavigationPlugin from "@11ty/eleventy-navigation";
 import shortcodes from "./build/shortcodes.js";
 import { execSync } from "child_process";
-
 export default function (eleventyConfig) {
-    const PRODUCTION_DIR = 'online-course-notes-11ty';
+    function getProductionPrefix() {
+        if (process.env.PATH_PREFIX) {
+            return process.env.PATH_PREFIX;
+        }
+
+        let repoName = "";
+        if (process.env.GITHUB_REPOSITORY) {
+            repoName = process.env.GITHUB_REPOSITORY.split("/")[1] || "";
+        } else {
+            try {
+                const remoteUrl = execSync("git config --get remote.origin.url", {
+                    encoding: "utf-8",
+                    stdio: ["ignore", "pipe", "ignore"],
+                }).trim();
+                const match = remoteUrl.match(/[:/]([^/:]+?)(\.git)?$/);
+                if (match && match[1]) {
+                    repoName = match[1];
+                }
+            } catch {
+                // Not in a git repo or git command failed
+            }
+        }
+
+        if (repoName && !repoName.toLowerCase().endsWith(".github.io")) {
+            return `/${repoName}/`;
+        }
+
+        return "/";
+    }
+
     const isProduction = process.env.ELEVENTY_RUN_MODE === "build" || process.env.NODE_ENV === "production";
+    const pathPrefix = process.env.PATH_PREFIX || (isProduction ? getProductionPrefix() : "/");
 
     // Enable HTML base plugin for pathPrefix rewriting
     eleventyConfig.addPlugin(HtmlBasePlugin);
@@ -102,8 +131,21 @@ export default function (eleventyConfig) {
     eleventyConfig.addPairedShortcode("galleryslide", shortcodes.insertGallerySlide);
     eleventyConfig.addPairedShortcode("slide", shortcodes.insertGallerySlide);
 
+    let allCollectionItems = [];
+    eleventyConfig.addCollection("_tocItems", (collectionApi) => {
+        allCollectionItems = collectionApi.getAll();
+        return allCollectionItems;
+    });
+
+    eleventyConfig.addShortcode("toc", function (arg1, arg2) {
+        return shortcodes.insertToc.call(this, arg1, arg2, allCollectionItems);
+    });
+    eleventyConfig.addShortcode("tableofcontents", function (arg1, arg2) {
+        return shortcodes.insertToc.call(this, arg1, arg2, allCollectionItems);
+    });
+
     return {
-      pathPrefix: isProduction ? PRODUCTION_DIR : '/',
+      pathPrefix,
       dir: {
         input: "./src",
         output: "./public",

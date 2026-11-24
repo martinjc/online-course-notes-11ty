@@ -962,3 +962,8 @@ dialog.gallery-dialog {
     border: 1px solid #c5221f;
   }
 }
+
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+}

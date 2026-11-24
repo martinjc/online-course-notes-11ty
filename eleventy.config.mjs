@@ -2,6 +2,7 @@ import { HtmlBasePlugin } from "@11ty/eleventy";
 import syntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
 import markdownItFootnote from "markdown-it-footnote";
 import markdownItEmoji from "markdown-it-emoji";
+import markdownItKatex from "@vscode/markdown-it-katex";
 import markdownIt from "markdown-it";
 import eleventyNavigationPlugin from "@11ty/eleventy-navigation";
 import shortcodes from "./build/shortcodes.js";
@@ -51,9 +52,13 @@ export default function (eleventyConfig) {
         execSync("npx @tailwindcss/cli -i src/css/main.css -o public/css/main.css --minify");
     });
 
-    // Copy root files and examples
+    // Copy root files, examples, and KaTeX assets
     eleventyConfig.addPassthroughCopy({"src/_root/*.*": "./"});
     eleventyConfig.addPassthroughCopy("src/examples");
+    eleventyConfig.addPassthroughCopy({
+        "node_modules/katex/dist/katex.min.css": "css/katex/katex.min.css",
+        "node_modules/katex/dist/fonts": "css/katex/fonts",
+    });
 
     // Syntax highlighting & navigation plugins
     eleventyConfig.addPlugin(syntaxHighlight);
@@ -67,7 +72,8 @@ export default function (eleventyConfig) {
         typographer: true,
     })
     .use(markdownItFootnote)
-    .use(markdownItEmoji);
+    .use(markdownItEmoji)
+    .use(markdownItKatex.default ?? markdownItKatex);
 
     eleventyConfig.setLibrary('md', markdownLib);
 
